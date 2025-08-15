@@ -5,16 +5,16 @@ phases:
     runtime-versions:
       python: 3.9
     commands:
-      # Create requirements.txt with Flask
-      - echo "flask==2.0.1" > requirements.txt
-      # Install dependencies
+      # Pin compatible versions
+      - echo "flask==2.0.3" > requirements.txt
+      - echo "werkzeug==2.0.3" >> requirements.txt
       - pip install -r requirements.txt
 
   build:
     commands:
-      - echo "Testing Flask app..."
-      # Run your actual file (flask-app.py)
-      - python flask-app.py &                # Background process
-      - sleep 5                             # Increased wait time
-      - curl http://localhost:5000          # Test endpoint
-      - pkill -f "python flask-app.py"      # Cleanup
+      - echo "Starting Flask app..."
+      # Run in foreground with explicit bind
+      - python flask-app.py --host=0.0.0.0 --port=5000 &
+      - sleep 10  # Extra time to start
+      - curl -v http://localhost:5000
+      - pkill -f "python flask-app.py"
