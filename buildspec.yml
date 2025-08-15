@@ -9,7 +9,7 @@ phases:
   build:
     commands:
       - echo "Testing Flask app..."
-      - python app.py &                # Run Flask in background
+      - python flask-app.py &                # Run Flask in background
       - sleep 3                        # Wait for app to start
       - curl http://localhost:5000     # Test endpoint
-      - pkill -f "python app.py"       # Stop Flask
+      - pkill -f "python flask-app.py"       # Stop Flask
