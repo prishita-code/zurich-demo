@@ -1,0 +1,15 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.9
+    commands:
+      - pip install -r requirements.txt  # Install Flask
+  build:
+    commands:
+      - echo "Testing Flask app..."
+      - python app.py &                # Run Flask in background
+      - sleep 3                        # Wait for app to start
+      - curl http://localhost:5000     # Test endpoint
+      - pkill -f "python app.py"       # Stop Flask
