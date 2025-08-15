@@ -5,7 +5,6 @@ phases:
     runtime-versions:
       python: 3.9
     commands:
-      # Pin compatible versions
       - echo "flask==2.0.3" > requirements.txt
       - echo "werkzeug==2.0.3" >> requirements.txt
       - pip install -r requirements.txt
@@ -13,8 +12,13 @@ phases:
   build:
     commands:
       - echo "Starting Flask app..."
-      # Run in foreground with explicit bind
-      - python flask-app.py --host=0.0.0.0 --port=5000 &
-      - sleep 10  # Extra time to start
-      - curl -v http://localhost:5000
+      # Run on port 3000 to match your app's configuration
+      - python flask-app.py --host=0.0.0.0 --port=3000 &
+      - sleep 10
+      # Test the correct port (3000)
+      - curl -v http://localhost:3000
       - pkill -f "python flask-app.py"
+
+  post_build:
+    commands:
+      - echo "Build completed successfully"
